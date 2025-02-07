@@ -12,6 +12,8 @@ This document defines the release that will be deployed on or before `(fill in w
 
 Around the vote date, that's expected to kick off at `(fill in with vote date, MMMM d, yyyy)`, this release will be finalized and presented to the community for approval. Note that all features that are not code complete will be moved to a future release or removed prior to vote.
 
+---
+
 ## Roadmap Features
 
 ### Feature 1
@@ -49,6 +51,8 @@ TODO: Impact. How will the implementation impact stakeholders in the Helium comm
 ```
 TODO: Drawbacks. Why should we not do this?
 ```
+
+---
 
 ### Feature 2
 
