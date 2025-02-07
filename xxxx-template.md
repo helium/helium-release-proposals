@@ -20,31 +20,31 @@ Around the vote date, that's expected to kick off at `(fill in with vote date, M
 TODO: Description. A brief summary. Preferably a 1-2 line sentence that describes the feature and impact to the Helium network.
 ```
 
-### Motivation
+#### Motivation
 
 ```
 TODO: Motivation. Why are we doing this? What use cases does it support? What is the expected outcome?
 ```
 
-### Implementation
+#### Implementation
 
 ```
 TODO: Implementation. Explain the feature as implemented.
 ```
 
-### Alternatives Considered
+#### Alternatives Considered
 
 ```
 TODO: Alternatives. What alternative designs were considered and what pros/cons does this feature have relative to them?
 ```
 
-### Impact
+#### Impact
 
 ```
 TODO: Impact. How will the implementation impact stakeholders in the Helium community.
 ```
 
-## Drawbacks *(Optional)*
+#### Drawbacks *(Optional)*
 
 ```
 TODO: Drawbacks. Why should we not do this?
@@ -56,31 +56,31 @@ TODO: Drawbacks. Why should we not do this?
 TODO: Description. A brief summary. Preferably a 1-2 line sentence that describes the feature and impact to the Helium network.
 ```
 
-### Motivation
+#### Motivation
 
 ```
 TODO: Motivation. Why are we doing this? What use cases does it support? What is the expected outcome?
 ```
 
-### Implementation
+#### Implementation
 
 ```
 TODO: Implementation. Explain the feature as implemented.
 ```
 
-### Alternatives Considered
+#### Alternatives Considered
 
 ```
 TODO: Alternatives. What alternative designs were considered and what pros/cons does this feature have relative to them?
 ```
 
-### Impact
+#### Impact
 
 ```
 TODO: Impact. How will the implementation impact stakeholders in the Helium community.
 ```
 
-## Drawbacks *(Optional)*
+#### Drawbacks *(Optional)*
 
 ```
 TODO: Drawbacks. Why should we not do this?
