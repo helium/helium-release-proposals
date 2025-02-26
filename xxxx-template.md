@@ -6,6 +6,8 @@ authors:
 status: Proposed/Voting/Approved/Released
 ---
 
+# Helium Release Proposal `{fill in with MMMM and yyyy}`
+
 ## Summary
 
 This document defines the release that will be deployed on or before `(fill in with release date, MMMM d, yyyy)`. As features are discussed in the community and developed by `(fill in with authors)`, this release document will be updated with context and explicit details on implementation.
@@ -16,7 +18,12 @@ Around the vote date, that's expected to kick off at `(fill in with vote date, M
 
 ## Roadmap Features
 
-### Feature 1
+1. Feature 1
+2. Feature 2
+
+---
+
+### (1) Feature 1
 
 ```
 TODO: Description. A brief summary. Preferably a 1-2 line sentence that describes the feature and impact to the Helium network.
@@ -54,7 +61,7 @@ TODO: Drawbacks. Why should we not do this?
 
 ---
 
-### Feature 2
+### (2) Feature 2
 
 ```
 TODO: Description. A brief summary. Preferably a 1-2 line sentence that describes the feature and impact to the Helium network.
