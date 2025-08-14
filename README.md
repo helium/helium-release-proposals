@@ -19,6 +19,7 @@ Work on your changes and then raise PRs against the code.
 Open up the latest [release proposal doc](https://github.com/helium/helium-release-proposals/tree/main/releases)
 Add a short 1 line description in the Roadmap Features
 Expand the Description by filling in the headed sections
+Add any associated images or content to /files/20xx-yy eg (2025-09)
 Add the links to the PRs at the bottom
 Raise a PR on the release proposal doc.
 
