@@ -2,6 +2,7 @@
 
 The goal of the Helium Release Proposals is to standardize and document the Helium Roadmap as defined in [HIP-141][hip-141] and approved by the Helium Community.
 
+- HRP 2025-09 passed with [99.80% of the vote](https://heliumvote.com/hnt/proposals/ALFRiumV2VzoaExpa19uWFadC3t6oHzTcKchXBkcoNnr) on Sep 12th 2025
 - HRP 2025-08 passed with [99.43% of the vote](https://heliumvote.com/hnt/proposals/8eCQRARRPm8hHK5K3wpdQrYmDhLLjVCd6eRUmzoQCubB) on Aug 14th 2025
 - HRP 2025-07 passed with [97.96% of the vote](https://heliumvote.com/hnt/proposals/12ARP2XCGRaJ1NGe2aTpy6U27UuPK2mET3gcZnxnCYUf) on July 15th 2025
 - HRP 2025-06 passed with [99.80% of the vote](https://heliumvote.com/hnt/proposals/EgR6bDCNQ7f1CAMvptXF4nZkxVm3jYpkpKDYiESHwcLE) on June 16th 2025
