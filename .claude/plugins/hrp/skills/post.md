@@ -58,7 +58,7 @@ Hey everyone, the {Month Year} Helium Release Proposal is out and ready for your
 - Vote opens: ~{vote-date formatted naturally}
 - Target release: {release-date formatted naturally}
 
-Check out the full proposal here: https://github.com/helium/helium-release-proposals/blob/main/releases/{filename}
+Check out the [full proposal](https://github.com/helium/helium-release-proposals/blob/main/releases/{filename})
 
 Questions or feedback? Drop them in the comments — we want to hear from you before the vote goes live.
 ```
@@ -79,7 +79,7 @@ Hey everyone, the April 2026 Helium Release Proposal is out and ready for your r
 - Vote opens: ~March 20th
 - Target release: April 1st
 
-Check out the full proposal here: https://github.com/helium/helium-release-proposals/blob/main/releases/20260401-core-devs.md
+Check out the [full proposal](https://github.com/helium/helium-release-proposals/blob/main/releases/20260401-core-devs.md)
 
 Questions or feedback? Drop them in the comments — we want to hear from you before the vote goes live.
 ```
@@ -94,7 +94,7 @@ For a new feature added:
 
 {Plain-language 2-3 sentence explanation of the feature and why it matters.}
 
-Updated proposal: https://github.com/helium/helium-release-proposals/blob/main/releases/{filename}
+[Updated proposal](https://github.com/helium/helium-release-proposals/blob/main/releases/{filename})
 ```
 
 For a vote reminder:
@@ -105,7 +105,7 @@ Quick recap of what's in this release:
 
 {numbered list in plain language}
 
-Cast your vote at https://www.heliumvote.com
+Cast your vote at [heliumvote.com](https://www.heliumvote.com)
 ```
 
 ### 4. Confirm with user
