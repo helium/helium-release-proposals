@@ -1,14 +1,14 @@
 ---
 name: post
-description: Post or update a Helium Release Proposal on r/HeliumNetwork as HeliumConsoleTeam. Use when the user wants to announce a new HRP, post an update about feature additions, or notify the community about an HRP.
+description: Post or update a Helium Release Proposal on Reddit (r/HeliumNetwork) as HeliumConsoleTeam. Use this skill whenever the user mentions posting to Reddit, announcing an HRP, updating the subreddit, sending a vote reminder, or notifying the community about a release proposal — even if they just say "post it" or "let people know". Also triggers for "announce on Reddit", "update the thread", "Reddit post", or "subreddit".
 user_invocable: true
 ---
 
 # HRP Reddit Post Skill
 
-You help post Helium Release Proposals to r/HeliumNetwork. Each HRP gets **one Reddit post** (the announcement). All subsequent updates (new features, vote reminders, etc.) are posted as **comments on that original post**.
+You help post Helium Release Proposals to r/HeliumNetwork. Each HRP gets **one Reddit post** (the initial announcement). All subsequent updates (new features added, vote reminders, etc.) are posted as **comments on that original post** to keep discussion in one thread.
 
-The Reddit post ID is tracked in the release file's YAML frontmatter (`reddit-post-id` field), so it's visible in the repo and accessible to all users.
+The Reddit post ID is tracked in the release file's YAML frontmatter (`reddit-post-id` field), so it's visible in the repo and any contributor can post follow-ups.
 
 ## Script location
 
@@ -22,6 +22,8 @@ The Reddit post ID is tracked in the release file's YAML frontmatter (`reddit-po
 - If the user specifies a month, find that specific HRP file
 - Read the full HRP file contents
 - Note the release filename (e.g. `releases/20260401-core-devs.md`)
+
+**If the HRP has no real features** (empty Roadmap Features, or only placeholder text like "no protocol updates"), tell the user there's nothing to announce yet and stop. Don't post an empty announcement.
 
 ### 2. Determine new post vs update
 
@@ -37,32 +39,54 @@ uv run "${CLAUDE_PLUGIN_ROOT}/scripts/reddit-post.py" lookup --file releases/YYY
 
 ### 3. Format the content
 
-**Tone: casual and community-friendly.** This is a subreddit, not a boardroom. Keep it conversational — explain features in plain language, avoid jargon, and sound like a person talking to the community. No corporate-speak.
+**Tone: casual and community-friendly.** This is a subreddit, not a boardroom. Write like a team member talking to the community — conversational, plain language, no jargon or corporate-speak.
 
 #### New announcement (no `reddit-post-id`)
 
-Title: `HRP {Month Year} is up — here's what's in it`
+Title format: `HRP {Month Year} is up — here's what's in it`
 
-Body:
+Body structure:
+
 ```
 Hey everyone, the {Month Year} Helium Release Proposal is out and ready for your review.
 
 **What's in this release:**
 
-{For each feature: a plain-language 2-3 sentence explanation of what it does and why it matters. Write this like you're explaining it to a community member, not a developer. Pull from the Motivation section but rephrase conversationally.}
+{For each feature, write a plain-language 2-3 sentence explanation. Pull from the Motivation section but rephrase it like you're explaining to a community member, not a developer.}
 
 **Key dates:**
-- Vote opens: ~{vote-date formatted naturally, e.g. "March 20th"}
-- Target release: {release-date formatted naturally, e.g. "April 1st"}
+- Vote opens: ~{vote-date formatted naturally}
+- Target release: {release-date formatted naturally}
 
 Check out the full proposal here: https://github.com/helium/helium-release-proposals/blob/main/releases/{filename}
 
 Questions or feedback? Drop them in the comments — we want to hear from you before the vote goes live.
 ```
 
+**Concrete example** — here's what the April 2026 HRP post would look like:
+
+Title: `HRP April 2026 is up — here's what's in it`
+
+Body:
+```
+Hey everyone, the April 2026 Helium Release Proposal is out and ready for your review.
+
+**What's in this release:**
+
+**1. Staked HNT Position Transfers** — Right now, if you've staked HNT and need to move your position to a different wallet (say, because your wallet got compromised or you want to move to a cold wallet), you're stuck waiting for the full unlock period. This release adds the ability to transfer staked positions directly between wallets without unstaking. Your lock duration, staked amount, and rewards all stay exactly the same — only the owning wallet changes.
+
+**Key dates:**
+- Vote opens: ~March 20th
+- Target release: April 1st
+
+Check out the full proposal here: https://github.com/helium/helium-release-proposals/blob/main/releases/20260401-core-devs.md
+
+Questions or feedback? Drop them in the comments — we want to hear from you before the vote goes live.
+```
+
 #### Update comment (has `reddit-post-id`)
 
-Determine what changed — ask the user if unclear. Format as a comment:
+Ask the user what changed if it's not obvious from context. Format as a comment on the existing thread:
 
 For a new feature added:
 ```
@@ -86,7 +110,7 @@ Cast your vote at https://www.heliumvote.com
 
 ### 4. Confirm with user
 
-**Always show the full formatted title (if new) and body to the user and ask for confirmation before posting.** The user may want to adjust wording.
+**Always show the full formatted title (if new) and body to the user and get explicit confirmation before posting.** The user may want to adjust wording, add context, or change tone.
 
 ### 5. Post or comment
 
@@ -117,7 +141,7 @@ After posting:
 
 ## Credential setup
 
-If credentials are missing, tell the user:
+If credentials are missing, the script will error with details. Tell the user:
 
 1. Log in to Reddit as **HeliumConsoleTeam**
 2. Go to https://www.reddit.com/prefs/apps/ → create a **script** type app
