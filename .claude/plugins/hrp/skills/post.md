@@ -97,9 +97,9 @@ For a new feature added:
 [Updated proposal](https://github.com/helium/helium-release-proposals/blob/main/releases/{filename})
 ```
 
-For a vote reminder:
+For a vote reminder (only post once the on-chain proposal is active and voting is live):
 ```
-**Heads up: voting opens {vote-date}**
+**Heads up: voting is live for HRP {Month Year}**
 
 Quick recap of what's in this release:
 

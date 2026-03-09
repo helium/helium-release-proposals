@@ -123,50 +123,22 @@ Create a public gist with the vote summary:
 
 Note the raw URL of the gist — you'll need it for the proposal entry.
 
-### 4. Generate the helium-proposals.json entry
+### 4. Open PR against helium/helium-vote
 
-The entry follows this exact structure:
-
-```json
-{
-  "name": "Helium Release Proposal: {YYYY-MM}",
-  "uri": "{raw gist URL}",
-  "maxChoicesPerVoter": 1,
-  "tags": ["Release"],
-  "choices": [
-    {
-      "uri": null,
-      "name": "For Helium Release {YYYY-MM}"
-    },
-    {
-      "uri": null,
-      "name": "Against Helium Release {YYYY-MM}"
-    }
-  ]
-}
-```
-
-### 5. Open PR against helium/helium-vote
-
-- Fork or clone `helium/helium-vote` if needed
-- Append the new entry to `helium-proposals.json` (add to the end of the array)
-- Open a PR:
-  - Title: `Add HRP {YYYY-MM} vote proposal`
-  - Body: Link to the HRP file and the gist
+Use the `vote-pr.sh` script — it handles everything via the GitHub API as hiptron (no local clone needed):
 
 ```bash
-"${CLAUDE_PLUGIN_ROOT}/scripts/gh-hiptron.sh" pr create --repo helium/helium-vote --title "Add HRP {YYYY-MM} vote proposal" --body "$(cat <<'PREOF'
-## Summary
-Adds the community vote proposal for [HRP {Month Year}](https://github.com/helium/helium-release-proposals/blob/main/releases/{filename}).
-
-Vote summary gist: {gist URL}
-PREOF
-)"
+"${CLAUDE_PLUGIN_ROOT}/scripts/vote-pr.sh" \
+  --month "{YYYY-MM}" \
+  --gist-url "{raw gist URL}" \
+  --hrp-file "releases/{filename}"
 ```
 
-Note the PR number/URL.
+The script fetches `helium-proposals.json`, appends the vote entry, creates a branch, commits, and opens the PR. It prints the PR URL on success.
 
-### 6. Update the HRP frontmatter
+Note the PR URL from the output.
+
+### 5. Update the HRP frontmatter
 
 Add tracking fields and update status:
 
@@ -176,7 +148,7 @@ Add tracking fields and update status:
 
 Commit this change to the release-proposals repo with message: `Freeze HRP {Month Year} for voting`
 
-### 7. Post Reddit update
+### 6. Post Reddit update
 
 If the HRP has a `reddit-post-id`, post a vote reminder comment on the existing thread:
 
@@ -194,7 +166,7 @@ We'll update this thread when voting is officially live.
 
 If no `reddit-post-id`, suggest running `/hrp:post` first.
 
-### 8. Report
+### 7. Report
 
 Tell the user:
 - Gist created (with URL)
