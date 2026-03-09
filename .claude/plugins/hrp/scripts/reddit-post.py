@@ -32,7 +32,12 @@ USER_AGENT = "helium-release-proposals/1.0 (by /u/HeliumConsoleTeam)"
 
 def read_frontmatter(filepath):
     """Read YAML frontmatter from a release file. Returns (dict, full_text)."""
-    text = Path(filepath).read_text()
+    path = Path(filepath)
+    if not path.exists():
+        print(f"Error: Release file not found: {filepath}", file=sys.stderr)
+        sys.exit(1)
+
+    text = path.read_text()
     match = re.match(r"^---\n(.*?\n)---\n", text, re.DOTALL)
     if not match:
         print(f"Error: No YAML frontmatter found in {filepath}", file=sys.stderr)
@@ -77,6 +82,7 @@ def load_credentials():
     }
 
     if not all(creds.values()) and ENV_FILE.exists():
+        found_any = False
         for line in ENV_FILE.read_text().splitlines():
             line = line.strip()
             if not line or line.startswith("#"):
@@ -87,6 +93,9 @@ def load_credentials():
             env_key = key.lower().replace("reddit_", "")
             if env_key in creds:
                 creds[env_key] = creds[env_key] or value
+                found_any = True
+        if not found_any:
+            print(f"Warning: {ENV_FILE} exists but no credentials were parsed from it.", file=sys.stderr)
 
     missing = [k for k, v in creds.items() if not v]
     if missing:
@@ -125,12 +134,19 @@ def get_access_token(creds):
         with urllib.request.urlopen(req) as resp:
             result = json.loads(resp.read())
     except urllib.error.HTTPError as e:
-        body = e.read().decode()
-        print(f"Error: Auth failed ({e.code}): {body}", file=sys.stderr)
+        print(f"Error: Reddit auth failed (HTTP {e.code})", file=sys.stderr)
+        sys.exit(1)
+    except urllib.error.URLError as e:
+        print(f"Error: Could not reach Reddit API: {e.reason}", file=sys.stderr)
+        sys.exit(1)
+    except (json.JSONDecodeError, ValueError):
+        print("Error: Reddit returned non-JSON response during auth", file=sys.stderr)
         sys.exit(1)
 
     if "access_token" not in result:
-        print(f"Error: Auth response missing token: {result}", file=sys.stderr)
+        error_type = result.get("error", "unknown")
+        error_msg = result.get("message", "no details")
+        print(f"Error: Reddit auth failed: {error_type} - {error_msg}", file=sys.stderr)
         sys.exit(1)
 
     return result["access_token"]
@@ -150,8 +166,24 @@ def api_request(token, method, endpoint, data=None):
             return json.loads(resp.read())
     except urllib.error.HTTPError as e:
         body = e.read().decode()
-        print(f"Error: API request failed ({e.code}): {body}", file=sys.stderr)
+        print(f"Error: Reddit API request failed (HTTP {e.code}): {body}", file=sys.stderr)
         sys.exit(1)
+    except urllib.error.URLError as e:
+        print(f"Error: Could not reach Reddit API: {e.reason}", file=sys.stderr)
+        sys.exit(1)
+    except (json.JSONDecodeError, ValueError):
+        print("Error: Reddit returned non-JSON response", file=sys.stderr)
+        sys.exit(1)
+
+
+def check_reddit_errors(result, action):
+    """Check for Reddit API-level errors (returned as HTTP 200 with errors in body)."""
+    if "json" in result:
+        errors = result["json"].get("errors", [])
+        if errors:
+            error_msgs = "; ".join(f"{e[0]}: {e[1]}" for e in errors)
+            print(f"Error: {action} failed: {error_msgs}", file=sys.stderr)
+            sys.exit(1)
 
 
 def cmd_post(args):
@@ -176,10 +208,7 @@ def cmd_post(args):
         "sendreplies": "true",
     })
 
-    if result.get("success") is False:
-        errors = result.get("jquery", result)
-        print(f"Error: Post failed: {json.dumps(errors)}", file=sys.stderr)
-        sys.exit(1)
+    check_reddit_errors(result, "Reddit post")
 
     post_url = None
     post_id = None
@@ -191,8 +220,15 @@ def cmd_post(args):
         print("Error: No post ID returned from Reddit", file=sys.stderr)
         sys.exit(1)
 
-    # Write post ID into the release file frontmatter
-    write_frontmatter_field(args.file, "reddit-post-id", post_id)
+    # Print recovery info before writing, so post ID isn't lost if write fails
+    print(f"Reddit post created: {post_id}", file=sys.stderr)
+
+    try:
+        write_frontmatter_field(args.file, "reddit-post-id", post_id)
+    except Exception as e:
+        print(f"Error: Failed to write post ID to {args.file}: {e}", file=sys.stderr)
+        print(f"IMPORTANT: Manually add 'reddit-post-id: {post_id}' to {args.file} frontmatter", file=sys.stderr)
+        sys.exit(1)
 
     output = {"success": True, "post_id": post_id}
     if post_url:
@@ -219,6 +255,8 @@ def cmd_update(args):
         "thing_id": post_id,
         "text": args.body,
     })
+
+    check_reddit_errors(result, "Reddit comment")
 
     output = {"success": True, "parent_post_id": post_id}
     if "json" in result and "data" in result["json"]:

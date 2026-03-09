@@ -53,19 +53,38 @@ for cmd in jq base64; do
 done
 
 # Check that gh-hiptron.sh works
-if ! "$GH" auth status &>/dev/null; then
-  echo "Error: hiptron GitHub auth failed. Check $SCRIPT_DIR/gh-hiptron.sh setup." >&2
+AUTH_OUTPUT=$("$GH" auth status 2>&1) || {
+  echo "Error: hiptron GitHub auth failed:" >&2
+  echo "$AUTH_OUTPUT" >&2
   exit 1
-fi
+}
+
+# Cleanup trap: delete remote branch if we created it but something fails after
+BRANCH_CREATED=false
+cleanup() {
+  if $BRANCH_CREATED; then
+    echo "Cleaning up: deleting branch $BRANCH from $REPO..." >&2
+    "$GH" api "repos/$REPO/git/refs/heads/$BRANCH" -X DELETE >/dev/null 2>&1 || true
+  fi
+}
+trap cleanup ERR
 
 echo "Fetching $FILE_PATH from $REPO..."
 
 # Get the SHA of the default branch HEAD
 BASE_SHA=$("$GH" api "repos/$REPO/git/ref/heads/main" --jq '.object.sha')
+if [[ -z "$BASE_SHA" || "$BASE_SHA" == "null" ]]; then
+  echo "Error: Could not resolve HEAD SHA for $REPO main branch." >&2
+  exit 1
+fi
 
 # Get the current file content and its blob SHA
 FILE_RESPONSE=$("$GH" api "repos/$REPO/contents/$FILE_PATH")
 FILE_SHA=$(echo "$FILE_RESPONSE" | jq -r '.sha')
+if [[ -z "$FILE_SHA" || "$FILE_SHA" == "null" ]]; then
+  echo "Error: Could not get $FILE_PATH SHA from $REPO." >&2
+  exit 1
+fi
 CURRENT_CONTENT=$(echo "$FILE_RESPONSE" | jq -r '.content' | base64 -d)
 
 # Build the new entry
@@ -98,10 +117,16 @@ fi
 
 echo "Creating branch $BRANCH..."
 
-# Check if branch already exists
-if "$GH" api "repos/$REPO/git/ref/heads/$BRANCH" &>/dev/null 2>&1; then
+# Check if branch already exists (distinguish 404 from other errors)
+BRANCH_CHECK_STATUS=$("$GH" api "repos/$REPO/git/ref/heads/$BRANCH" \
+  --include 2>/dev/null | head -1 | grep -oE '[0-9]{3}' || echo "000")
+if [[ "$BRANCH_CHECK_STATUS" == "200" ]]; then
   echo "Error: Branch $BRANCH already exists in $REPO." >&2
-  echo "Delete it first if you want to retry: $GH api repos/$REPO/git/refs/heads/$BRANCH -X DELETE" >&2
+  echo "Delete it first if you want to retry:" >&2
+  echo "  $GH api repos/$REPO/git/refs/heads/$BRANCH -X DELETE" >&2
+  exit 1
+elif [[ "$BRANCH_CHECK_STATUS" != "404" ]]; then
+  echo "Error: Could not check if branch exists (HTTP $BRANCH_CHECK_STATUS)." >&2
   exit 1
 fi
 
@@ -109,11 +134,12 @@ fi
 "$GH" api "repos/$REPO/git/refs" \
   -f "ref=refs/heads/$BRANCH" \
   -f "sha=$BASE_SHA" > /dev/null
+BRANCH_CREATED=true
 
 echo "Committing updated $FILE_PATH..."
 
-# Commit the updated file
-ENCODED_CONTENT=$(echo "$UPDATED_CONTENT" | base64)
+# Encode content — use printf to avoid trailing newline, tr to strip line wrapping
+ENCODED_CONTENT=$(printf '%s' "$UPDATED_CONTENT" | base64 | tr -d '\n')
 "$GH" api "repos/$REPO/contents/$FILE_PATH" \
   -X PUT \
   -f "message=Add HRP $MONTH vote proposal" \
@@ -136,5 +162,6 @@ Vote summary gist: $GIST_URL
 PREOF
 )")
 
+BRANCH_CREATED=false  # success — don't clean up
 echo ""
 echo "Done! PR created: $PR_URL"

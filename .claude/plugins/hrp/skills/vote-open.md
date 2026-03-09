@@ -1,6 +1,6 @@
 ---
 name: vote-open
-description: Start the voting process for a Helium Release Proposal. Creates the vote summary gist, opens a PR against helium/helium-vote, updates the HRP status to Voting, and posts a vote reminder to Reddit. Use when the user says "open voting", "start the vote", "create the vote", "put it to vote", "kick off voting", or it's time to submit an HRP for community vote.
+description: Start the voting process for a Helium Release Proposal. Creates the vote summary gist, opens a PR against helium/helium-vote, updates the HRP status to Frozen, and posts a vote reminder to Reddit. Use when the user says "open voting", "start the vote", "create the vote", "put it to vote", "kick off voting", or it's time to submit an HRP for community vote.
 user_invocable: true
 ---
 
@@ -11,7 +11,7 @@ You help start the community vote for a Helium Release Proposal by creating the 
 ## Prerequisites
 
 - The HRP must have `status: Proposed` and at least one real feature
-- hiptron GitHub token must be configured (see Credential setup below)
+- hiptron GitHub token must be configured — if missing, `gh-hiptron.sh` will print setup instructions
 - The user must be ready to finalize — once voting opens, the HRP content is frozen
 
 ## GitHub commands
@@ -118,7 +118,8 @@ To participate in governance, please join the Community for live events on [X](h
 Create a public gist with the vote summary:
 
 ```bash
-"${CLAUDE_PLUGIN_ROOT}/scripts/gh-hiptron.sh" gist create --public --desc "HRP {YYYY-MM} Vote Summary" --filename "HRP-{YYYY-MM}-Vote-Summary.md" /path/to/summary.md
+# Write the summary to a temp file first, then pass it positionally
+"${CLAUDE_PLUGIN_ROOT}/scripts/gh-hiptron.sh" gist create --public --desc "HRP {YYYY-MM} Vote Summary" /tmp/HRP-{YYYY-MM}-Vote-Summary.md
 ```
 
 Note the raw URL of the gist — you'll need it for the proposal entry.

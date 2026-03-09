@@ -137,7 +137,7 @@ The script reads the `reddit-post-id` from frontmatter and posts a comment on th
 
 After posting:
 - Report the URL back to the user
-- If this was a new post, the release file was modified (frontmatter now has `reddit-post-id`). Ask the user if they want to commit this change.
+- If this was a new post, the release file was modified (frontmatter now has `reddit-post-id`). Commit this change to the branch where the release file lives (typically `main`) with message: `Add reddit-post-id for HRP {Month Year}`
 
 ## Credential setup
 

@@ -1,6 +1,8 @@
 #!/bin/bash
 # Run gh CLI commands as the hiptron GitHub user.
-# Loads the token from ~/.config/hrp/github.env and passes it via GH_TOKEN.
+# Parses the token from ~/.config/hrp/github.env and passes it via GH_TOKEN.
+
+set -euo pipefail
 
 ENV_FILE="$HOME/.config/hrp/github.env"
 
@@ -16,11 +18,13 @@ if [ ! -f "$ENV_FILE" ]; then
   exit 1
 fi
 
-source "$ENV_FILE"
+# Parse the token value directly instead of sourcing the file as code
+HIPTRON_GITHUB_TOKEN=$(grep -m1 '^HIPTRON_GITHUB_TOKEN=' "$ENV_FILE" | cut -d'=' -f2-)
 
 if [ -z "$HIPTRON_GITHUB_TOKEN" ]; then
   echo "Error: HIPTRON_GITHUB_TOKEN not set in $ENV_FILE" >&2
   exit 1
 fi
 
+unset GH_DEBUG
 GH_TOKEN="$HIPTRON_GITHUB_TOKEN" exec gh "$@"

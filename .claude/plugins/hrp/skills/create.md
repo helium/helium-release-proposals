@@ -19,8 +19,8 @@ You scaffold a new Helium Release Proposal file and open a PR for it. The file i
 ### 2. Compute dates
 
 **Release date**: First Wednesday of the target month.
-- If that Wednesday falls on a US holiday (Jan 1, Jul 4, Nov ~fourth Thursday, Dec 25, Jan 2 if New Year's week), use the following Wednesday.
-- Examples: May 2026 → Wed May 6, June 2026 → Wed June 3
+- If that Wednesday falls within a US holiday week (the same Mon–Fri block as the holiday), use the following Wednesday. Holidays to check: New Year's Day (Jan 1), Independence Day (Jul 4), Thanksgiving (4th Thursday of Nov), Christmas (Dec 25).
+- Examples: May 2026 → Wed May 6, June 2026 → Wed June 3, January 2026 → Wed Jan 14 (Jan 7 is in New Year's week)
 
 **Vote date**: 10 days before the release date.
 - Example: release May 6 → vote April 26
