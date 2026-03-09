@@ -23,61 +23,63 @@ The Reddit post ID is tracked in the release file's YAML frontmatter (`reddit-po
 - Read the full HRP file contents
 - Note the release filename (e.g. `releases/20260401-core-devs.md`)
 
-### 2. Check if a Reddit post already exists for this HRP
+### 2. Determine new post vs update
 
-Check the frontmatter for a `reddit-post-id` field, or use:
+Check the release file's frontmatter for a `reddit-post-id` field:
 
+- **No `reddit-post-id`** → this is a **new HRP** that hasn't been announced yet. Create a new Reddit post.
+- **Has `reddit-post-id`** → a post already exists. Post a **comment** on the existing thread.
+
+You can also verify programmatically:
 ```bash
 uv run "${CLAUDE_PLUGIN_ROOT}/scripts/reddit-post.py" lookup --file releases/YYYYMMDD-core-devs.md
 ```
 
-- If `found: true` → this is an **update** (comment on existing post)
-- If `found: false` → this is a **new announcement** (create post)
-
 ### 3. Format the content
 
-#### New announcement (no existing post)
+**Tone: casual and community-friendly.** This is a subreddit, not a boardroom. Keep it conversational — explain features in plain language, avoid jargon, and sound like a person talking to the community. No corporate-speak.
 
-Title: `Helium Release Proposal {Month Year} — Open for Community Review`
+#### New announcement (no `reddit-post-id`)
+
+Title: `HRP {Month Year} is up — here's what's in it`
 
 Body:
 ```
-The Helium Release Proposal for {Month Year} has been published and is open for community review.
+Hey everyone, the {Month Year} Helium Release Proposal is out and ready for your review.
 
-**Release Date:** {release-date}
-**Vote Date:** {vote-date}
+**What's in this release:**
 
-## Proposed Features
+{For each feature: a plain-language 2-3 sentence explanation of what it does and why it matters. Write this like you're explaining it to a community member, not a developer. Pull from the Motivation section but rephrase conversationally.}
 
-{numbered list of features with 1-2 sentence summary of each from the motivation section}
+**Key dates:**
+- Vote opens: ~{vote-date formatted naturally, e.g. "March 20th"}
+- Target release: {release-date formatted naturally, e.g. "April 1st"}
 
----
+Check out the full proposal here: https://github.com/helium/helium-release-proposals/blob/main/releases/{filename}
 
-Full proposal: https://github.com/helium/helium-release-proposals/blob/main/releases/{filename}
-
-The vote will open around {vote-date formatted naturally}. Review the proposal and share your feedback before then.
+Questions or feedback? Drop them in the comments — we want to hear from you before the vote goes live.
 ```
 
-#### Update comment (existing post found)
+#### Update comment (has `reddit-post-id`)
 
 Determine what changed — ask the user if unclear. Format as a comment:
 
 For a new feature added:
 ```
-**Update: {Feature Name} added to HRP {Month Year}**
+**Update: {Feature Name} added**
 
-{Brief summary from the feature's motivation section}
+{Plain-language 2-3 sentence explanation of the feature and why it matters.}
 
-Full proposal: https://github.com/helium/helium-release-proposals/blob/main/releases/{filename}
+Updated proposal: https://github.com/helium/helium-release-proposals/blob/main/releases/{filename}
 ```
 
 For a vote reminder:
 ```
-**Reminder: Voting opens {vote-date}**
+**Heads up: voting opens {vote-date}**
 
-The community vote for this release opens on {vote-date}. Proposed features:
+Quick recap of what's in this release:
 
-{numbered list}
+{numbered list in plain language}
 
 Cast your vote at https://www.heliumvote.com
 ```
