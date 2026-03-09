@@ -1,0 +1,5 @@
+{
+  "name": "hrp",
+  "description": "Helium Release Proposal lifecycle management",
+  "skills": ["skills/*.md"]
+}
