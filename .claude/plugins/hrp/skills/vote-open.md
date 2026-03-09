@@ -24,34 +24,35 @@ You help start the community vote for a Helium Release Proposal by creating the 
 
 ### 2. Generate the vote summary
 
-Create a markdown document summarizing the HRP for voters. This is what voters see on heliumvote.com.
+Create a markdown document summarizing the HRP for voters. This is what voters see on heliumvote.com. The format is concise — just a summary paragraph, the feature list, and boilerplate sections.
 
-Follow this structure (derived from existing vote summaries):
+**Template for releases with features:**
 
 ```markdown
-# Helium Release Proposal: {YYYY-MM} Summary
+# Helium Release Proposal: {YYYY-MM}
 
-{1-2 paragraph summary of what this release contains. For each feature, explain in plain language what it does and why. Keep it accessible — voters aren't all developers.}
+## Summary
+This proposal defines the {Month Year} Helium release that will be deployed after a successful outcome of this vote. The linked release notes have context and explicit details on implementation.
+
+- Authors: Helium Core Developers
+- Full release note text: [{YYYY-MM}](https://github.com/helium/helium-release-proposals/blob/main/releases/{filename})
 
 ## Roadmap Features
-
-{For each feature:}
-
-### {Feature Name}
-
-{2-3 sentence plain-language summary pulled from the Motivation and Implementation sections.}
+{numbered list of feature names — just the names, no descriptions}
 
 ## Approval Requirements
 
 * This HRP is considered approved if 67% of the voting power is reached.
 * This HRP must reach the quorum of 100,000,000 veHNT to be considered valid.
 
+***
+
 ## Governance
 
-To participate in governance, stakeholders can engage through the Community for live events on X and ongoing discussion on Reddit. Monthly Deployers roundtables occur on the third Thursday, with quarterly tokenholder updates also scheduled.
+To participate in governance, please join the Community for live events on [X](https://x.com/helium) and ongoing discussion on [Reddit](https://reddit.com/r/HeliumNetwork/). Governance related events will be the monthly Deployers roundtable on 3rd Thursday of each month and the quarterly tokenholder updates.
 ```
 
-For no-change releases, use this shorter form:
+**Template for no-change releases:**
 
 ```markdown
 # Helium Release Proposal: {YYYY-MM} - No Changes
@@ -67,9 +68,37 @@ This proposal defines the {Month Year} Helium release which contains no changes 
 * This HRP is considered approved if 67% of the voting power is reached.
 * This HRP must reach the quorum of 100,000,000 veHNT to be considered valid.
 
+***
+
 ## Governance
 
-To participate in governance, stakeholders can engage through the Community for live events on X and ongoing discussion on Reddit. Monthly Deployers roundtables occur on the third Thursday, with quarterly tokenholder updates also scheduled.
+To participate in governance, please join the Community for live events on [X](https://x.com/helium) and ongoing discussion on [Reddit](https://reddit.com/r/HeliumNetwork/). Governance related events will be the monthly Deployers roundtable on 3rd Thursday of each month and the quarterly tokenholder updates.
+```
+
+**Concrete example** — here's what the April 2026 vote summary would look like:
+
+```markdown
+# Helium Release Proposal: 2026-04
+
+## Summary
+This proposal defines the April 2026 Helium release that will be deployed after a successful outcome of this vote. The linked release notes have context and explicit details on implementation.
+
+- Authors: Helium Core Developers
+- Full release note text: [2026-04](https://github.com/helium/helium-release-proposals/blob/main/releases/20260401-core-devs.md)
+
+## Roadmap Features
+1. Staked HNT Position Transfers
+
+## Approval Requirements
+
+* This HRP is considered approved if 67% of the voting power is reached.
+* This HRP must reach the quorum of 100,000,000 veHNT to be considered valid.
+
+***
+
+## Governance
+
+To participate in governance, please join the Community for live events on [X](https://x.com/helium) and ongoing discussion on [Reddit](https://reddit.com/r/HeliumNetwork/). Governance related events will be the monthly Deployers roundtable on 3rd Thursday of each month and the quarterly tokenholder updates.
 ```
 
 **Show the generated summary to the user for confirmation before creating the gist.**
@@ -160,6 +189,6 @@ If no `reddit-post-id`, suggest running `/hrp:post` first.
 Tell the user:
 - Gist created (with URL)
 - PR opened against helium/helium-vote (with URL)
-- HRP status updated to Voting
+- HRP status updated to Frozen
 - Reddit update posted (or reminder to post)
 - Next step: a maintainer reviews and merges the vote PR, then the multisig signers approve the on-chain proposal
