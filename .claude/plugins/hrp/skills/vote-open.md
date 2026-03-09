@@ -11,8 +11,18 @@ You help start the community vote for a Helium Release Proposal by creating the 
 ## Prerequisites
 
 - The HRP must have `status: Proposed` and at least one real feature
-- `gh` CLI must be authenticated with access to `helium/helium-vote`
+- hiptron GitHub token must be configured (see Credential setup below)
 - The user must be ready to finalize — once voting opens, the HRP content is frozen
+
+## GitHub commands
+
+All GitHub API commands (gists, PRs, pushes) run as the **hiptron** user via the wrapper script:
+
+```
+${CLAUDE_PLUGIN_ROOT}/scripts/gh-hiptron.sh
+```
+
+Use this instead of bare `gh` for every GitHub operation in this skill.
 
 ## Steps
 
@@ -108,7 +118,7 @@ To participate in governance, please join the Community for live events on [X](h
 Create a public gist with the vote summary:
 
 ```bash
-gh gist create --public --desc "HRP {YYYY-MM} Vote Summary" --filename "HRP-{YYYY-MM}-Vote-Summary.md" /path/to/summary.md
+"${CLAUDE_PLUGIN_ROOT}/scripts/gh-hiptron.sh" gist create --public --desc "HRP {YYYY-MM} Vote Summary" --filename "HRP-{YYYY-MM}-Vote-Summary.md" /path/to/summary.md
 ```
 
 Note the raw URL of the gist — you'll need it for the proposal entry.
@@ -145,7 +155,7 @@ The entry follows this exact structure:
   - Body: Link to the HRP file and the gist
 
 ```bash
-gh pr create --repo helium/helium-vote --title "Add HRP {YYYY-MM} vote proposal" --body "$(cat <<'PREOF'
+"${CLAUDE_PLUGIN_ROOT}/scripts/gh-hiptron.sh" pr create --repo helium/helium-vote --title "Add HRP {YYYY-MM} vote proposal" --body "$(cat <<'PREOF'
 ## Summary
 Adds the community vote proposal for [HRP {Month Year}](https://github.com/helium/helium-release-proposals/blob/main/releases/{filename}).
 
@@ -192,3 +202,4 @@ Tell the user:
 - HRP status updated to Frozen
 - Reddit update posted (or reminder to post)
 - Next step: a maintainer reviews and merges the vote PR, then the multisig signers approve the on-chain proposal
+

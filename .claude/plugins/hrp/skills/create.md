@@ -76,11 +76,12 @@ Formatting rules:
 
 - Always branch from `main`: `git checkout -b hrp/{YYYY-MM} main`
 - Commit the new file: `Add HRP {Month Year} release file`
-- Push with `-u` flag and open a PR:
+- Push with `-u` flag
+- Open the PR as **hiptron** using `"${CLAUDE_PLUGIN_ROOT}/scripts/gh-hiptron.sh" pr create`. If credentials aren't set up, the script will print setup instructions.
 
-Title: `HRP {Month Year}`
+  Title: `HRP {Month Year}`
 
-Body:
+  Body:
 ```
 ## Summary
 - Release date: {Month Dth, Year}
