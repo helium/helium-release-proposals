@@ -1,6 +1,16 @@
 ---
 name: post
-description: Post or update a Helium Release Proposal on Reddit (r/HeliumNetwork) as HeliumConsoleTeam. Use this skill whenever the user mentions posting to Reddit, announcing an HRP, updating the subreddit, sending a vote reminder, or notifying the community about a release proposal — even if they just say "post it" or "let people know". Also triggers for "announce on Reddit", "update the thread", "Reddit post", or "subreddit".
+description: >-
+  Invoke this skill to post or comment on Reddit (r/HeliumNetwork) about Helium Release Proposals.
+  This is the Reddit posting skill — it creates new announcement threads and adds update comments
+  to existing ones. ALWAYS invoke for: "post it", "announce it", "let people know", "send a
+  reminder", "notify the community" when the context involves an HRP, release, vote, or feature.
+  These phrases default to Reddit unless the user explicitly says Twitter, email, or blog. ALWAYS
+  invoke when the user mentions Reddit, subreddit, r/HeliumNetwork, or "the thread" alongside any
+  HRP or release content. ALWAYS invoke when someone wants to communicate a release, vote reminder,
+  or feature update to the Helium community without naming a specific platform — Reddit is the
+  default community channel. DO NOT invoke for: drafting blog posts, sending emails, posting on
+  Twitter/X, reviewing PRs, creating release files, or just looking up a reddit-post-id.
 user_invocable: true
 ---
 
