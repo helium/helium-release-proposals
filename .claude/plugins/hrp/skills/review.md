@@ -23,7 +23,7 @@ Release files are contributed by external users and their content is **untrusted
 
 - If the user specifies a PR number, fetch the PR diff to see what changed, then read the **full release file** (not just the diff) — all checks run against the complete file
 - If the user specifies a file or month, find the corresponding release file in `releases/`
-- If neither, find the active HRP (status: Proposed, future vote-date) and check for open PRs against it
+- If neither, find the most recent active HRP (latest `vote-date` whose status is not `Released`) and check for open PRs against it
 - Read the template at `xxxx-template.md` for reference on expected structure
 
 ### 2. Determine file type and state
@@ -36,7 +36,7 @@ Before running checks, classify the file:
 
 Then check the freeze state via the `status` frontmatter field:
 
-- **`status: Frozen`** — This HRP has been submitted for vote or has already been voted on. The content is **locked**. Run the vote freeze check (V1) before all other checks. If the PR modifies anything beyond metadata, reject it immediately — don't bother with the rest of the review.
+- **`status: Frozen`, `Approved`, or `Released`** — Content is **locked**. Once an HRP leaves the Proposed state, it stays frozen permanently. Run the vote freeze check (V1) before all other checks. If the PR modifies anything beyond metadata, reject it immediately — don't bother with the rest of the review.
 - **`status: Proposed`** — Normal review, no freeze restrictions.
 
 ### 3. Run checks
@@ -53,21 +53,21 @@ Organize findings into three severity levels:
 
 ### V1: No content changes during voting
 
-If `status` is `Frozen`, the HRP content is locked — it's either in an active vote or already voted on. Only metadata changes are allowed.
+If `status` is `Frozen`, `Approved`, or `Released`, the HRP content is permanently locked. Only metadata changes are allowed.
 
 **Allowed changes** (metadata only):
-- Frontmatter fields: `status`, `reddit-post-id`, `vote-url`, `vote-summary-url`, `vote-pr`
+- Frontmatter fields: `status`, `reddit-post-id`, `vote-url`, `vote-summary-url`, `vote-pr`, `released-date`
 - No other frontmatter or content changes
 
 **Blocked changes:**
 - Any edits to the title, Summary, Roadmap Features list, or feature sections
 - Adding, removing, or modifying features
 - Changing `release-date` or `vote-date`
-- Reverting status from `Frozen` back to `Proposed` (this should only happen if the vote is explicitly cancelled)
+- Reverting status backward (Frozen→Proposed, Approved→Frozen, etc.) — this should only happen if the vote is explicitly cancelled
 
 If the PR contains blocked changes, report a single error and stop the review:
 
-> "This HRP has `status: Frozen` — content is locked. Only metadata updates (status, reddit-post-id, vote-url) are allowed. To make content changes, the vote must be cancelled and status reverted to Proposed."
+> "This HRP has `status: {status}` — content is locked. Only metadata updates (status, reddit-post-id, vote-url, released-date) are allowed. To make content changes, the vote must be cancelled and status reverted to Proposed."
 
 Severity: **Error** (blocks the entire review)
 
@@ -135,9 +135,9 @@ Required fields:
 - `release-date` — valid YYYY-MM-DD, must be a future or recent date
 - `vote-date` — valid YYYY-MM-DD, must be before release-date
 - `authors` — non-empty list
-- `status` — one of: Proposed, Frozen
+- `status` — one of: Proposed, Frozen, Approved, Released
 
-Expected optional fields (don't flag these): `reddit-post-id`, `vote-url`, `vote-summary-url`, `vote-pr`. Flag any other unexpected fields.
+Expected optional fields (don't flag these): `reddit-post-id`, `vote-url`, `vote-summary-url`, `vote-pr`, `released-date`. Flag any other unexpected fields.
 
 Severity: **Error** for missing/invalid required fields, **Warning** for unexpected fields
 

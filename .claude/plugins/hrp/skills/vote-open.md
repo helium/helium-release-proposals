@@ -10,7 +10,7 @@ You help start the community vote for a Helium Release Proposal by creating the 
 
 ## Prerequisites
 
-- The HRP must have `status: Proposed` and at least one real feature
+- The HRP must have `status: Proposed` (with features for a normal vote, or without features for a no-change proxy vote)
 - hiptron GitHub token must be configured — if missing, `gh-hiptron.sh` will print setup instructions
 - The user must be ready to finalize — once voting opens, the HRP content is frozen
 
@@ -30,7 +30,8 @@ Use this instead of bare `gh` for every GitHub operation in this skill.
 
 - Find the active HRP (status: Proposed, upcoming vote-date) or use the month the user specifies
 - Read the full release file
-- Confirm with the user: "Ready to open voting for HRP {Month Year}? Once the vote PR is merged, the HRP content will be frozen."
+- If the HRP has no features, confirm: "This is a no-change release — open a proxy vote for HRP {Month Year}?" Use the no-change template in step 2.
+- Otherwise, confirm: "Ready to open voting for HRP {Month Year}? The HRP content will be frozen from this point forward."
 
 ### 2. Generate the vote summary
 
@@ -147,7 +148,9 @@ Add tracking fields and update status:
 - `vote-summary-url: {raw gist URL}`
 - `vote-pr: {PR URL or helium/helium-vote#NN}`
 
-Commit this change to the release-proposals repo with message: `Freeze HRP {Month Year} for voting`
+Commit this change directly to `main` with message: `Freeze HRP {Month Year} for voting`
+
+Note: the HRP is frozen immediately even though the helium-vote PR hasn't been merged yet. This signals to contributors that content is locked. If the vote PR is later rejected or the multisig doesn't sign, run `/hrp:vote-close` with the cancelled option to revert to Proposed.
 
 ### 6. Post Reddit update
 

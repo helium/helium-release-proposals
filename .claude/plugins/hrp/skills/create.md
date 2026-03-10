@@ -96,4 +96,4 @@ This is the skeleton release file for {Month Year}. Contributors can now open PR
 Tell the user:
 - The file path and PR link
 - Release date and vote date
-- Next step: contributors open PRs adding features to this file, and those PRs can be checked with `/hrp:review`
+- Next step: merge this PR to main, then contributors can open PRs adding features to this file. Feature PRs can be checked with `/hrp:review`.

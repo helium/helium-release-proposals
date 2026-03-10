@@ -28,8 +28,8 @@ The Reddit post ID is tracked in the release file's YAML frontmatter (`reddit-po
 
 ### 1. Identify the target HRP
 
-- Look at files in `releases/` to find the active HRP (status: Proposed, with a future or recent vote-date)
 - If the user specifies a month, find that specific HRP file
+- Otherwise, find the most recent active HRP — look for the file with the latest `vote-date` whose status is not `Released`
 - Read the full HRP file contents
 - Note the release filename (e.g. `releases/20260401-core-devs.md`)
 
@@ -147,7 +147,7 @@ The script reads the `reddit-post-id` from frontmatter and posts a comment on th
 
 After posting:
 - Report the URL back to the user
-- If this was a new post, the release file was modified (frontmatter now has `reddit-post-id`). Commit this change to the branch where the release file lives (typically `main`) with message: `Add reddit-post-id for HRP {Month Year}`
+- If this was a new post, the release file was modified (frontmatter now has `reddit-post-id`). Commit this change directly to `main` with message: `Add reddit-post-id for HRP {Month Year}`
 
 ## Credential setup
 
