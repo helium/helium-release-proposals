@@ -1,0 +1,13 @@
+{
+  "name": "helium-release-proposals",
+  "owner": {
+    "name": "Helium Core Developers"
+  },
+  "plugins": [
+    {
+      "name": "hrp",
+      "description": "Helium Release Proposal lifecycle management — create, review, post, vote, and release HRPs",
+      "source": "./.claude/plugins/hrp/.claude-plugin"
+    }
+  ]
+}
