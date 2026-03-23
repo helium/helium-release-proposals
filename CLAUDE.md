@@ -27,3 +27,22 @@ Optional fields: reddit-post-id, vote-url, vote-summary-url, vote-pr, released-d
 
 - **hiptron** (GitHub) — opens PRs, creates gists
 - **HeliumConsoleTeam** (Reddit) — posts announcements
+
+## HRP Plugin Development
+
+The HRP plugin is distributed as a Claude Code marketplace plugin from this repo.
+After pushing changes to plugin files on `main`, the local install does NOT auto-update
+(known bug — marketplace clone and cache are never refreshed). To pick up changes:
+
+```bash
+git -C ~/.claude/plugins/marketplaces/helium-release-proposals pull origin main
+rm -rf ~/.claude/plugins/cache/helium-release-proposals
+# then: /plugin install hrp && /reload-plugins
+```
+
+### Plugin structure
+
+- Marketplace manifest: `.claude-plugin/marketplace.json` (repo root)
+- Plugin manifest: `.claude/plugins/hrp/.claude-plugin/plugin.json`
+- Skills: `.claude/plugins/hrp/skills/<name>/SKILL.md` (must be subdirectory + SKILL.md, not flat files)
+- Scripts: `.claude/plugins/hrp/scripts/`

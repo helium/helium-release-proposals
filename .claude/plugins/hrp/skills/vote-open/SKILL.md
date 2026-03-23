@@ -152,9 +152,18 @@ Commit this change directly to `main` with message: `Freeze HRP {Month Year} for
 
 Note: the HRP is frozen immediately even though the helium-vote PR hasn't been merged yet. This signals to contributors that content is locked. If the vote PR is later rejected or the multisig doesn't sign, run `/hrp:vote-close` with the cancelled option to revert to Proposed.
 
-### 6. Post Reddit update
+### 6. Report
 
-If the HRP has a `reddit-post-id`, post a vote reminder comment on the existing thread:
+Tell the user:
+- Gist created (with URL)
+- PR opened against helium/helium-vote (with URL)
+- HRP status updated to Frozen
+- Next step: a maintainer reviews and merges the vote PR, then the multisig signers approve the on-chain proposal
+
+Then nudge the user to post a vote reminder on Reddit. If the HRP has a `reddit-post-id`, provide:
+
+1. A direct link to the Reddit thread: `https://www.reddit.com/comments/{id}/` (strip the `t3_` prefix from the post ID for the URL)
+2. The comment text in a fenced code block so they can copy-paste it:
 
 ```
 **Heads up: voting is opening for HRP {Month Year}**
@@ -168,14 +177,5 @@ Quick recap of what's in this release:
 We'll update this thread when voting is officially live.
 ```
 
-If no `reddit-post-id`, suggest running `/hrp:post` first.
-
-### 7. Report
-
-Tell the user:
-- Gist created (with URL)
-- PR opened against helium/helium-vote (with URL)
-- HRP status updated to Frozen
-- Reddit update posted (or reminder to post)
-- Next step: a maintainer reviews and merges the vote PR, then the multisig signers approve the on-chain proposal
+If no `reddit-post-id`, suggest running `/hrp:post` first to create the announcement thread.
 

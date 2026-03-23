@@ -87,46 +87,47 @@ if [[ -z "$FILE_SHA" || "$FILE_SHA" == "null" ]]; then
 fi
 CURRENT_CONTENT=$(echo "$FILE_RESPONSE" | jq -r '.content' | base64 -d)
 
-# Build the new entry
-NEW_ENTRY=$(jq -n \
-  --arg name "Helium Release Proposal: $MONTH" \
-  --arg uri "$GIST_URL" \
-  --arg choice_for "For Helium Release $MONTH" \
-  --arg choice_against "Against Helium Release $MONTH" \
-  '{
-    name: $name,
-    uri: $uri,
-    maxChoicesPerVoter: 1,
-    tags: ["Release"],
-    choices: [
-      { uri: null, name: $choice_for },
-      { uri: null, name: $choice_against }
+# Build the new entry matching the existing compact format
+NEW_ENTRY='  {
+    "name": "Helium Release Proposal: '"$MONTH"'",
+    "uri": "'"$GIST_URL"'",
+    "maxChoicesPerVoter": 1,
+    "tags": ["Release"],
+    "choices": [
+      { "uri": null, "name": "For Helium Release '"$MONTH"'" },
+      { "uri": null, "name": "Against Helium Release '"$MONTH"'" }
     ]
-  }')
+  }'
 
-# Append to the array
-UPDATED_CONTENT=$(echo "$CURRENT_CONTENT" | jq --argjson entry "$NEW_ENTRY" '. + [$entry]')
+# Append entry to JSON array, preserving existing formatting
+UPDATED_CONTENT=$(python3 -c "
+import json, sys
+content = sys.stdin.read()
+new_entry = sys.argv[1]
 
-# Check that the entry was actually added
-ORIGINAL_COUNT=$(echo "$CURRENT_CONTENT" | jq 'length')
-UPDATED_COUNT=$(echo "$UPDATED_CONTENT" | jq 'length')
-if [[ "$UPDATED_COUNT" -le "$ORIGINAL_COUNT" ]]; then
-  echo "Error: Failed to append entry to $FILE_PATH" >&2
-  exit 1
-fi
+# Validate original
+entries = json.loads(content)
+count = len(entries)
+
+# Find last '}' before final ']' — that's where we insert
+rstrip = content.rstrip()
+arr_close = rstrip.rfind(']')
+obj_close = rstrip[:arr_close].rstrip().rfind('}')
+
+result = content[:obj_close+1] + ',\n' + new_entry + '\n]\n'
+
+# Validate result is valid JSON with one more entry
+assert len(json.loads(result)) == count + 1, 'Entry not appended correctly'
+print(result, end='')
+" "$NEW_ENTRY" <<< "$CURRENT_CONTENT")
 
 echo "Creating branch $BRANCH..."
 
-# Check if branch already exists (distinguish 404 from other errors)
-BRANCH_CHECK_STATUS=$("$GH" api "repos/$REPO/git/ref/heads/$BRANCH" \
-  --include 2>/dev/null | head -1 | grep -oE '[0-9]{3}' || echo "000")
-if [[ "$BRANCH_CHECK_STATUS" == "200" ]]; then
+# Check if branch already exists (200 = exists, 404 = free to create)
+if "$GH" api "repos/$REPO/git/ref/heads/$BRANCH" >/dev/null 2>&1; then
   echo "Error: Branch $BRANCH already exists in $REPO." >&2
   echo "Delete it first if you want to retry:" >&2
   echo "  $GH api repos/$REPO/git/refs/heads/$BRANCH -X DELETE" >&2
-  exit 1
-elif [[ "$BRANCH_CHECK_STATUS" != "404" ]]; then
-  echo "Error: Could not check if branch exists (HTTP $BRANCH_CHECK_STATUS)." >&2
   exit 1
 fi
 
