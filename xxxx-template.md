@@ -3,7 +3,7 @@ release-date: (fill me in with expected release date, yyyy-MM-dd)
 vote-date: (fill me in with expected date for vote to kick off, yyyy-MM-dd)
 authors:
   - (fill in with names of authors/groups)
-status: Proposed/Voting/Approved/Released
+status: Proposed/Frozen/Approved/Released
 ---
 
 # Helium Release Proposal `{fill in with MMMM and yyyy}`

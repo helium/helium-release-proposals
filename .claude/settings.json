@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "helium-release-proposals": {
+      "source": {
+        "source": "github",
+        "repo": "helium/helium-release-proposals"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "hrp@helium-release-proposals": true
+  }
+}
