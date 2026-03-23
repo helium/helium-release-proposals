@@ -1,4 +1,7 @@
 {
+  "enabledPlugins": {
+    "hrp@helium-release-proposals": true
+  },
   "extraKnownMarketplaces": {
     "helium-release-proposals": {
       "source": {
@@ -6,8 +9,5 @@
         "repo": "helium/helium-release-proposals"
       }
     }
-  },
-  "enabledPlugins": {
-    "hrp@helium-release-proposals": true
   }
 }
