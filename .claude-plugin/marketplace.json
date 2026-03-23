@@ -7,7 +7,7 @@
     {
       "name": "hrp",
       "description": "Helium Release Proposal lifecycle management — create, review, post, vote, and release HRPs",
-      "source": "./.claude/plugins/hrp/.claude-plugin"
+      "source": "./.claude/plugins/hrp"
     }
   ]
 }
