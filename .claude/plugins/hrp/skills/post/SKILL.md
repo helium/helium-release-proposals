@@ -5,6 +5,8 @@ description: >-
   This is the Reddit posting skill — it creates new announcement threads and adds update comments
   to existing ones. ALWAYS invoke for: "post it", "announce it", "let people know", "send a
   reminder", "notify the community" when the context involves an HRP, release, vote, or feature.
+  ALWAYS invoke when the user says "the vote is live", "voting is open", "vote went live",
+  "multisig signed" — these mean it's time to post the vote-live reminder on Reddit.
   These phrases default to Reddit unless the user explicitly says Twitter, email, or blog. ALWAYS
   invoke when the user mentions Reddit, subreddit, r/HeliumNetwork, or "the thread" alongside any
   HRP or release content. ALWAYS invoke when someone wants to communicate a release, vote reminder,
@@ -115,7 +117,7 @@ Quick recap of what's in this release:
 
 {numbered list in plain language}
 
-Cast your vote at [heliumvote.com](https://www.heliumvote.com)
+Voting is open for 7 days. You can vote in the [Helium Wallet](https://wallet.helium.com) app or at [heliumvote.com](https://www.heliumvote.com).
 ```
 
 ### 4. Confirm with user

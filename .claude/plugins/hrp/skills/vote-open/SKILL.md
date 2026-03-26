@@ -168,7 +168,7 @@ Then nudge the user to post a vote reminder on Reddit. If the HRP has a `reddit-
 ```
 **Heads up: voting is opening for HRP {Month Year}**
 
-The vote proposal has been submitted and is pending approval. Once the multisig signs off, voting will go live at [heliumvote.com](https://www.heliumvote.com).
+The vote proposal has been submitted and is pending approval. Once the multisig signs off, voting will be open for 7 days. You'll be able to vote in the [Helium Wallet](https://wallet.helium.com) app or at [heliumvote.com](https://www.heliumvote.com).
 
 Quick recap of what's in this release:
 
