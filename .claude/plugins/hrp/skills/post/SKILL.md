@@ -109,7 +109,7 @@ For a new feature added:
 [Updated proposal](https://github.com/helium/helium-release-proposals/blob/main/releases/{filename})
 ```
 
-For a vote reminder (only post once the on-chain proposal is active and voting is live):
+For a vote-live announcement (only post once the on-chain proposal is active and voting is live):
 ```
 **Heads up: voting is live for HRP {Month Year}**
 
@@ -119,6 +119,21 @@ Quick recap of what's in this release:
 
 Voting is open for 7 days. You can vote in the [Helium Wallet](https://wallet.helium.com) app or at [heliumvote.com](https://www.heliumvote.com).
 ```
+
+**After posting a vote-live update**, set `vote-live-date: {YYYY-MM-DD}` (today's date) in the HRP frontmatter and commit to `main` with message: `Record vote-live-date for HRP {Month Year}`. This date is used to calculate when the 7-day voting window closes.
+
+For a vote-ending-soon reminder (post ~2 days before the vote closes, i.e. around day 5 of the 7-day window). Calculate the end date from `vote-live-date` + 7 days:
+```
+**Reminder: voting for HRP {Month Year} closes on {end date}**
+
+If you haven't voted yet, now's the time. Here's what's in this release:
+
+{numbered list in plain language}
+
+Vote in the [Helium Wallet](https://wallet.helium.com) app or at [heliumvote.com](https://www.heliumvote.com).
+```
+
+If no `vote-live-date` is set, ask the user when voting started to calculate the end date.
 
 ### 4. Confirm with user
 

@@ -137,7 +137,7 @@ Required fields:
 - `authors` — non-empty list
 - `status` — one of: Proposed, Frozen, Approved, Released
 
-Expected optional fields (don't flag these): `reddit-post-id`, `vote-url`, `vote-summary-url`, `vote-pr`, `released-date`. Flag any other unexpected fields.
+Expected optional fields (don't flag these): `reddit-post-id`, `vote-url`, `vote-summary-url`, `vote-pr`, `vote-live-date`, `released-date`. Flag any other unexpected fields.
 
 Severity: **Error** for missing/invalid required fields, **Warning** for unexpected fields
 

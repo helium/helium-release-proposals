@@ -21,7 +21,7 @@ Status flow: Proposed → Frozen → Approved → Released
 ## Frontmatter
 
 Required fields: release-date, vote-date, authors, status
-Optional fields: reddit-post-id, vote-url, vote-summary-url, vote-pr, released-date
+Optional fields: reddit-post-id, vote-url, vote-summary-url, vote-pr, vote-live-date, released-date
 
 ## Bot Accounts
 
