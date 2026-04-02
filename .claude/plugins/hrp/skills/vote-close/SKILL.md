@@ -31,20 +31,33 @@ This skill also handles the "vote cancelled" case where the vote never actually 
 - `Approved` → "This HRP's vote result has already been recorded."
 - `Released` → "This HRP has already been released."
 
-### 2. Determine the outcome
+### 2. Look up vote results from chain
 
-Ask the user which scenario applies:
+Run the lookup script to get the vote URL and results directly from the on-chain proposal:
 
-- **Vote passed** — community voted yes (meets the approval threshold)
-- **Vote failed** — community voted no (below the approval threshold)
-- **Vote cancelled** — the vote never went live (helium-vote PR rejected, multisig didn't sign, or decision to pull back)
+```bash
+"${CLAUDE_PLUGIN_ROOT}/scripts/lookup-vote-url.sh" --month "{YYYY-MM}" --results
+```
 
-### 3a. If vote passed
+This returns JSON with `url`, `publicKey`, `forPercent`, `againstPercent`, and `totalVeHNT`.
 
-Gather from the user (or extract from context):
-- **Vote URL** — the heliumvote.com link (e.g. `https://www.heliumvote.com/hnt/proposals/3hSC...`)
-- **Percentage** — the approval percentage (e.g. 98.87%)
-- **Date** — the date the vote concluded (default: today)
+**If the script returns an error** (proposal not found or RPC failure), fall back to asking the user for the vote URL and percentage manually.
+
+**If the frontmatter already has a `vote-url`**, use that instead of querying the chain.
+
+### 3. Determine the outcome
+
+Use the on-chain results to determine the outcome automatically:
+- **forPercent >= 67** → vote passed (meets the approval threshold)
+- **forPercent < 67** → vote failed
+
+Present the results to the user for confirmation: "The on-chain vote shows {forPercent}% approval ({totalVeHNT} veHNT). Record this as [passed/failed]?"
+
+If the user says the vote was **cancelled** (never went live), skip to step 4c.
+
+### 4a. If vote passed
+
+The vote URL and percentage come from the lookup script. The date defaults to today unless the user specifies otherwise.
 
 Update frontmatter:
 - `status: Approved`
@@ -56,7 +69,10 @@ Update README — insert a new line into the vote history list. The list lives b
 - HRP {YYYY-MM} passed with [{X}% of the vote]({vote-url}) on {Month Dth Year}
 ```
 
-Post Reddit comment (if `reddit-post-id` exists):
+Nudge the user to post a Reddit comment (if `reddit-post-id` exists). Provide:
+1. A direct link to the thread: `https://www.reddit.com/comments/{id}/` (strip `t3_` prefix from the post ID)
+2. The comment text in a fenced code block so they can copy-paste it:
+
 ```
 **HRP {Month Year} passed!**
 
@@ -67,22 +83,23 @@ Thanks to everyone who participated in the vote!
 [Vote results]({vote-url})
 ```
 
-### 3b. If vote failed
+### 4b. If vote failed
 
-Gather the same details as 3a (URL, percentage, date).
+Same data sources as 4a (URL, percentage from lookup script).
 
 Update frontmatter:
 - `status: Proposed` (reverts to allow further changes)
 - `vote-url: {heliumvote.com URL}` (kept for historical record)
 - Remove `vote-summary-url` and `vote-pr` fields
 
-Update README — same insertion point as 3a:
+Update README — same insertion point as 4a:
 
 ```
 - HRP {YYYY-MM} failed with [{X}% of the vote]({vote-url}) on {Month Dth Year}
 ```
 
-Post Reddit comment (if `reddit-post-id` exists):
+Nudge the user to post a Reddit comment (same pattern as 4a):
+
 ```
 **HRP {Month Year} did not pass**
 
@@ -91,7 +108,7 @@ The community vote concluded with {X}% approval. The proposal has been reverted 
 [Vote results]({vote-url})
 ```
 
-### 3c. If vote cancelled
+### 4c. If vote cancelled
 
 No vote URL, percentage, or date needed.
 
@@ -103,7 +120,7 @@ Do **not** update the README — nothing to record if no vote happened.
 
 No Reddit comment — unless the user specifically asks for one.
 
-### 4. Commit and report
+### 5. Commit and report
 
 Commit directly to `main` (the release file should already be on main by this point). Include both the release file and README (if changed) in a single commit:
 

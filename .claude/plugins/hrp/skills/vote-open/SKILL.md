@@ -159,6 +159,7 @@ Tell the user:
 - PR opened against helium/helium-vote (with URL)
 - HRP status updated to Frozen
 - Next step: a maintainer reviews and merges the vote PR, then the multisig signers approve the on-chain proposal
+- **When the vote goes live**, come back and say "the vote is live" to record the `vote-live-date` and `vote-url` (step 7)
 
 Then nudge the user to post a vote reminder on Reddit. If the HRP has a `reddit-post-id`, provide:
 
@@ -178,4 +179,22 @@ We'll update this thread when voting is officially live.
 ```
 
 If no `reddit-post-id`, suggest running `/hrp:post` first to create the announcement thread.
+
+### 7. Record vote-live-date and vote-url (when user returns)
+
+This step runs later — when the user says "the vote is live" or "the multisig signed."
+
+Look up the vote URL from the on-chain proposal:
+
+```bash
+"${CLAUDE_PLUGIN_ROOT}/scripts/lookup-vote-url.sh" --month "{YYYY-MM}"
+```
+
+This returns JSON with `url` and `publicKey`. If the script fails (proposal not yet on-chain), ask the user to try again later or provide the URL manually.
+
+Update the HRP frontmatter:
+- `vote-live-date: {today's date, YYYY-MM-DD}`
+- `vote-url: {heliumvote.com URL from lookup}`
+
+Commit to `main` with message: `Record vote-live-date for HRP {Month Year}`
 
