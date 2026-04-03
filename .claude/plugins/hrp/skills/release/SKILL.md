@@ -35,12 +35,14 @@ skipped without a vote.
 
 Ask the user:
 - **Deployment date** — when was the release deployed? Default to today.
+- **Transaction ID** — the on-chain Solana transaction signature for the release (optional but recommended)
 
 Confirm: "Marking HRP {Month Year} as released on {date}. Correct?"
 
 Update frontmatter:
 - `status: Released`
 - `released-date: {YYYY-MM-DD}`
+- `released-txid: {transaction signature}` (if provided)
 
 Post Reddit comment (if `reddit-post-id` exists):
 ```
