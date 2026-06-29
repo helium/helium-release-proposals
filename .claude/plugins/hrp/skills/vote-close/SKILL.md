@@ -2,8 +2,8 @@
 name: vote-close
 description: >-
   Record the result of a Helium Release Proposal community vote. Updates the HRP status to
-  Approved (or back to Proposed if the vote failed), adds the vote URL, updates the README
-  with the result, and posts a Reddit comment. Use when the user says "the vote passed",
+  Approved (or back to Proposed if the vote failed), adds the vote URL, and updates the README
+  with the result. Use when the user says "the vote passed",
   "record the vote result", "close the vote", "the vote is done", "update the HRP with
   the vote result", or mentions a heliumvote.com URL for an HRP. Also handles cancelling
   a vote that never started (reverting Frozen back to Proposed).
@@ -13,7 +13,7 @@ user_invocable: true
 # HRP Vote Close Skill
 
 You record the outcome of a Helium Release Proposal community vote and update all the
-tracking surfaces — the release file, the README, and the Reddit thread.
+tracking surfaces — the release file and the README.
 
 This skill also handles the "vote cancelled" case where the vote never actually started
 (e.g. the helium-vote PR was rejected or the multisig didn't sign).
@@ -69,20 +69,6 @@ Update README — insert a new line into the vote history list. The list lives b
 - HRP {YYYY-MM} passed with [{X}% of the vote]({vote-url}) on {Month Dth Year}
 ```
 
-Nudge the user to post a Reddit comment (if `reddit-post-id` exists). Provide:
-1. A direct link to the thread: `https://www.reddit.com/comments/{id}/` (strip `t3_` prefix from the post ID)
-2. The comment text in a fenced code block so they can copy-paste it:
-
-```
-**HRP {Month Year} passed!**
-
-The community approved this release with {X}% of the vote. Deployment is expected within the next few days.
-
-Thanks to everyone who participated in the vote!
-
-[Vote results]({vote-url})
-```
-
 ### 4b. If vote failed
 
 Same data sources as 4a (URL, percentage from lookup script).
@@ -98,16 +84,6 @@ Update README — same insertion point as 4a:
 - HRP {YYYY-MM} failed with [{X}% of the vote]({vote-url}) on {Month Dth Year}
 ```
 
-Nudge the user to post a Reddit comment (same pattern as 4a):
-
-```
-**HRP {Month Year} did not pass**
-
-The community vote concluded with {X}% approval. The proposal has been reverted to Proposed status for further discussion and revision.
-
-[Vote results]({vote-url})
-```
-
 ### 4c. If vote cancelled
 
 No vote URL, percentage, or date needed.
@@ -117,8 +93,6 @@ Update frontmatter:
 - Remove `vote-summary-url` and `vote-pr` fields
 
 Do **not** update the README — nothing to record if no vote happened.
-
-No Reddit comment — unless the user specifically asks for one.
 
 ### 5. Commit and report
 
@@ -130,7 +104,6 @@ Commit directly to `main` (the release file should already be on main by this po
 
 Tell the user:
 - What was updated
-- Reddit comment posted (or skipped)
 - Next step:
   - Passed: "Deploy the release, then run `/hrp:release` to record the deployment date."
   - Failed: "The HRP is back in Proposed status. You can revise it and run `/hrp:vote-open` again when ready."

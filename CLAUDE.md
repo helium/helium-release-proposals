@@ -26,7 +26,6 @@ Optional fields: reddit-post-id, vote-url, vote-summary-url, vote-pr, vote-live-
 ## Bot Accounts
 
 - **hiptron** (GitHub) — opens PRs, creates gists
-- **HeliumConsoleTeam** (Reddit) — posts announcements
 
 ## HRP Plugin Development
 
