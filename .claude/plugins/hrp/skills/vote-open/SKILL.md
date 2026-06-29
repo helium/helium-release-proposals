@@ -1,6 +1,6 @@
 ---
 name: vote-open
-description: Start the voting process for a Helium Release Proposal. Creates the vote summary gist, opens a PR against helium/helium-vote, updates the HRP status to Frozen, and posts a vote reminder to Reddit. Use when the user says "open voting", "start the vote", "create the vote", "put it to vote", "kick off voting", or it's time to submit an HRP for community vote.
+description: Start the voting process for a Helium Release Proposal. Creates the vote summary gist, opens a PR against helium/helium-vote, and updates the HRP status to Frozen. Use when the user says "open voting", "start the vote", "create the vote", "put it to vote", "kick off voting", or it's time to submit an HRP for community vote.
 user_invocable: true
 ---
 
@@ -60,7 +60,7 @@ This proposal defines the {Month Year} Helium release that will be deployed afte
 
 ## Governance
 
-To participate in governance, please join the Community for live events on [X](https://x.com/helium) and ongoing discussion on [Reddit](https://reddit.com/r/HeliumNetwork/). Governance related events will be the monthly Deployers roundtable on 3rd Thursday of each month and the quarterly tokenholder updates.
+Helium Network governance is discussed in the community [Discord](https://discord.gg/helium). Governance related updates are shared in the monthly newsletter, monthly community calls, and quarterly tokenholder updates.
 ```
 
 **Template for no-change releases:**
@@ -83,7 +83,7 @@ This proposal defines the {Month Year} Helium release which contains no changes 
 
 ## Governance
 
-To participate in governance, please join the Community for live events on [X](https://x.com/helium) and ongoing discussion on [Reddit](https://reddit.com/r/HeliumNetwork/). Governance related events will be the monthly Deployers roundtable on 3rd Thursday of each month and the quarterly tokenholder updates.
+Helium Network governance is discussed in the community [Discord](https://discord.gg/helium). Governance related updates are shared in the monthly newsletter, monthly community calls, and quarterly tokenholder updates.
 ```
 
 **Concrete example** — here's what the April 2026 vote summary would look like:
@@ -109,7 +109,7 @@ This proposal defines the April 2026 Helium release that will be deployed after 
 
 ## Governance
 
-To participate in governance, please join the Community for live events on [X](https://x.com/helium) and ongoing discussion on [Reddit](https://reddit.com/r/HeliumNetwork/). Governance related events will be the monthly Deployers roundtable on 3rd Thursday of each month and the quarterly tokenholder updates.
+Helium Network governance is discussed in the community [Discord](https://discord.gg/helium). Governance related updates are shared in the monthly newsletter, monthly community calls, and quarterly tokenholder updates.
 ```
 
 **Show the generated summary to the user for confirmation before creating the gist.**
@@ -160,25 +160,6 @@ Tell the user:
 - HRP status updated to Frozen
 - Next step: a maintainer reviews and merges the vote PR, then the multisig signers approve the on-chain proposal
 - **When the vote goes live**, come back and say "the vote is live" to record the `vote-live-date` and `vote-url` (step 7)
-
-Then nudge the user to post a vote reminder on Reddit. If the HRP has a `reddit-post-id`, provide:
-
-1. A direct link to the Reddit thread: `https://www.reddit.com/comments/{id}/` (strip the `t3_` prefix from the post ID for the URL)
-2. The comment text in a fenced code block so they can copy-paste it:
-
-```
-**Heads up: voting is opening for HRP {Month Year}**
-
-The vote proposal has been submitted and is pending approval. Once the multisig signs off, voting will be open for 7 days. You'll be able to vote in the [Helium Wallet](https://wallet.helium.com) app or at [heliumvote.com](https://www.heliumvote.com).
-
-Quick recap of what's in this release:
-
-{numbered feature list in plain language}
-
-We'll update this thread when voting is officially live.
-```
-
-If no `reddit-post-id`, suggest running `/hrp:post` first to create the announcement thread.
 
 ### 7. Record vote-live-date and vote-url (when user returns)
 

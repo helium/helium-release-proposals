@@ -44,15 +44,6 @@ Update frontmatter:
 - `released-date: {YYYY-MM-DD}`
 - `released-txid: {transaction signature}` (if provided)
 
-Post Reddit comment (if `reddit-post-id` exists):
-```
-**HRP {Month Year} is live**
-
-The {Month Year} release has been deployed to the network.
-
-{one-line summary of what shipped, e.g. "Staked HNT position transfers are now available."}
-```
-
 ### 2b. No-change month (status: Proposed, no features)
 
 This is a shortcut for months with no protocol changes. Instead of going through the full
@@ -68,8 +59,6 @@ Update README — insert at the top of the vote history list:
 ```
 - HRP {YYYY-MM} had no changes and was not put to vote.
 ```
-
-No Reddit post — nothing to announce.
 
 ### 3. Commit and report
 
